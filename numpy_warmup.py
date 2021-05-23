@@ -28,15 +28,22 @@ def drawGaussianDistributionTogether(mu: list, sigma: list):
     plt.show()
 
 
-def calcIntegral(begin: float, end: float, mu: float, sigma: float, step: int):
+def calcIntegral(begin: float, end: float, mu: float, sigma: float, step: int, kahan: bool):
     assert end >= begin
     lengthPerStep = (end - begin) / step
     x = np.linspace(begin, end, step)
     y = gaussianFunc(x, mu, sigma)
     integral = 0.0
+    _sum = error = 0.0
     for i in range(step - 1):
-        trapezoidArea = lengthPerStep * (y[i] + y[i + 1]) / 2
-        integral += trapezoidArea
+        if not kahan:
+            trapezoidArea = lengthPerStep * (y[i] + y[i + 1]) / 2
+            integral += trapezoidArea
+        else:
+            trapezoidArea = lengthPerStep * (y[i] + y[i + 1]) / 2 - error
+            integral = _sum + trapezoidArea
+            error = (integral - _sum) - trapezoidArea
+            _sum = integral
     print("The integral of this function (mu = {},sigma = {}) is: ".format(mu, sigma), integral)
 
 
@@ -45,7 +52,7 @@ def Main():
     sigma = [1, 2, 0.5, 4]
     for i in range(4):
         drawGaussianDistribution(mu[i], sigma[i], i)
-        calcIntegral(mu[i] - 4 * sigma[i], mu[i] + 4 * sigma[i], mu[i], sigma[i], 100000)
+        calcIntegral(mu[i] - 4 * sigma[i], mu[i] + 4 * sigma[i], mu[i], sigma[i], 100000, True)
     drawGaussianDistributionTogether(mu, sigma)
 
 

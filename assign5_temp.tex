@@ -1,0 +1,276 @@
+% vim: set spelllang=en :
+
+\documentclass[10pt]{article}
+
+\usepackage{amsmath, amssymb, amsfonts, amsthm} 
+\usepackage{upgreek} 
+\usepackage{amsthm} 
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{wrapfig}
+\usepackage{subfigure}
+\usepackage{mathrsfs}
+\usepackage{outlines}
+\usepackage[font={sf,it}, labelfont={sf,bf}, labelsep=space, belowskip=5pt]{caption}
+\usepackage{hyperref}
+\usepackage{titling}
+\usepackage{xifthen}
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage[title]{appendix}
+\usepackage{float}
+\usepackage{enumitem}
+
+\usepackage{bm}
+\usepackage{minted}
+\usepackage{xcolor}
+
+\pagestyle{fancy}
+\headheight 24pt
+\headsep    12pt
+\lhead{\documenttitle}
+\rhead{\today}
+\fancyfoot[C]{}
+\lfoot{}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+\newcommand{\documenttitle}{Assignment Solution}
+\newcommand{\coursetitle}{SE2324: Mathematical Foundation of Computer Sciences(Spring 2021)}
+\newcommand{\authorname}{Student Name, ID1001001001} % Your name and ID here
+
+\makeatletter
+
+\setlength{\droptitle}{-50pt}
+
+\title{\documenttitle \vspace{1ex} \\ \Large \coursetitle \vspace{-1ex}}
+\author{\authorname\vspace{-1ex}}
+
+
+% BEGIN DOCUMENT
+\begin{document}
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%
+\section{README}
+
+... 
+
+%%%%%%%%%%%%%%%%%%%
+\section{NumPy Warm-up (15 points)}
+
+Consider the following one-dimensional \textit{Gaussian probability distribution}, also known as the Normal distribution or bell curve distribution:
+
+\begin{center}
+$
+G(x \mid \mu, \sigma)=\frac{1}{Z} \exp \left[-\frac{1}{2} \frac{1}{\sigma^{2}}(x-\mu)^{2}\right] \quad
+$
+where 
+$
+Z=\sqrt{\frac{\pi}{\frac{1}{2} \frac{1}{\sigma^{2}}}}
+$
+\end{center}
+
+Here, the function $G : \mathbb{R} \rightarrow \mathbb{R}$ takes as input a scalar $x$, and produces as output a scalar. 
+The particular bell shape of $G$ is determined by two parameters: the mean $\mu \in \mathbb{R}$ and the variance $\sigma^2 \in \mathbb{R}$
+
+Numerically verify the following identity in Python:
+
+\begin{center}
+$\int_{\mathbb{R}} G(x) d x=1$
+\end{center}
+
+\begin{enumerate}[label=2.\arabic*]
+    \item (10 points)
+    Choose a few different one-dimensional Gaussian functions (by choosing different mean and variance values), plot them.\par
+    Draw four gaussian distribution graph based on 3$\sigma$-rule, the four graphs are shown as follows:\par
+    \begin{figure}[htbp]
+    	\centering
+    	\begin{minipage}[c]{0.5\textwidth} %minipage????????0.2????0.2
+    		\centering
+    		\includegraphics[width=1\linewidth]{./gaussian/0.png}
+    		\caption{Gaussian Distribution($\mu=0\ and\ \sigma=1$)}
+    	\end{minipage}%
+    	\begin{minipage}[c]{0.5\textwidth}
+    		\centering
+    		\includegraphics[width=1\textwidth]{./gaussian/1.png}
+    		\caption{Gaussian Distribution($\mu=1\ and\ \sigma=2$)}
+    	\end{minipage}
+    \end{figure}
+	\begin{figure}[htbp]
+ 	\centering
+ 	\begin{minipage}[c]{0.5\textwidth} %minipage????????0.2????0.2
+ 		\centering
+ 		\includegraphics[width=1\linewidth]{./gaussian/0.png}
+ 		\caption{Gaussian Distribution($\mu=5\ and\ \sigma=0.5$)}
+ 	\end{minipage}%
+ 	\begin{minipage}[c]{0.5\textwidth}
+ 		\centering
+ 		\includegraphics[width=1\textwidth]{./gaussian/1.png}
+ 		\caption{Gaussian Distribution($\mu=10\ and\ \sigma=4$)}
+ 	\end{minipage}
+ 	\end{figure}
+ 	Put them together:\par
+	\begin{figure}[H]
+ 		\centering
+ 		\includegraphics[width=1\textwidth]{./gaussian/together.png}
+ 		\caption{Gaussian Distribution($\mu=10\ and\ \sigma=4$)}
+ 	\end{figure}
+    \item (10 points)
+    Verify the above identity for each Gaussian function.\par 
+    Using knowledge of calculus,I write a programme to verify the above identity for the four function mentioned above.The running result of the programme are as follows:\par
+   	\begin{figure}[H]
+    	\centering
+    	\includegraphics[width=1\textwidth]{./gaussian/result_1.png}
+    	\caption{Running result of the programme}
+    \end{figure}
+	The integral region is $[\mu - 4\sigma,\mu + 4\sigma]$,according to the attributions of gaussian function,the result would be extremely close to 1.Apparently,with the region strenching,the result would infinitely approach to 1,which numerically verify the above identity.\par
+	Then I try to use Kahan Algorithm to reduce error,the running results are as follows:\par
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\textwidth]{./gaussian/result_2.png}
+		\caption{Running result of the programme}
+	\end{figure}
+	The result would be much more precise with the help of kahan algorithm.
+\end{enumerate}
+
+
+
+%%%%%%%%%%%%%%%%%%%
+\section{Numerics and Linear Algebra (60 points)}\label{sec:num_lin_alg}
+
+In this question, you will explore how the condition number of a matrix can have practical influence on which algorithms (e.g. LU, Cholesky) you can use to solve linear systems of the form: $A\vec{x}=\vec{b}$ where $A\in \mathbb{R}^{n\times n}$.
+We will study the Vandermonde matrix, as well as a matrix constructed from a finite Fourier Series basis.
+In this question, you will interpolate samples of the analytical function
+
+\begin{center}
+$f(x)=\frac{1}{1+x^2}$    
+\end{center}
+
+for $x\in[0,1]$. Your monomial interpolants (with $N=n+1$ terms) are given by
+
+\begin{center}
+$g_V(x)=\sum_{j=0}^{N} c_j x^j$
+\end{center}
+
+and
+
+\begin{center}
+$g_{F}(x)=\sum_{j=1}^{N / 2} c_{j} \sin (j \pi x)+\sum_{j=N / 2+1}^{N} c_{j} \cos ((j-N / 2) \pi x)$.
+\end{center}
+
+Use $M=m+1$ uniformly sampled positions
+
+\begin{center}
+$x_i=ih,\text{ }i=0\dots m$,
+\end{center}
+
+with spacing $h=1/m$, to generate $M$ samples of the test function $f$,
+
+\begin{center}
+$f_i=f(x_i),\text{ }i=0\dots m$.
+\end{center}
+
+To estimate the polynomial coefficients $\vec{c}$, you will assemble and solve the linear systems
+
+\begin{center}
+$V\vec{c}=\vec{f}$
+\end{center}
+
+and
+
+\begin{center}
+$F\vec{c}=\vec{f}$
+\end{center}
+
+where $V$ is the M-by-N Vandermonde matrix with entries
+
+\begin{center}
+$V_{ij}=(x_i)^j$
+\end{center}
+
+and $F$ is the finite Fourier Series basis matrix with entries
+
+\begin{center}
+$F_{i, j-1}=\left\{
+    \begin{array}{ll}
+        \sin \left(j \pi x_{i}\right), & \text { if } 1 \leq j \leq N / 2 \\
+        \cos \left((j-N / 2) \pi x_{i}\right), & N / 2+1 \leq j \leq N
+    \end{array}
+\right.$
+\end{center}
+
+For simplicity, assume $M=N$ for the entire problem.
+
+\begin{enumerate}[label=3.\arabic*]
+    \item (25 points) \label{q:3.1}
+    Use an LU solve (\textit{scipy.linalg.lu} from SciPy package) to estimate the monomial coefficients $\vec{c}$. (You can solve a linear system $A
+    \vec{x}=\vec{b}$ using NumPy API \textit{numpy.linalg.solve}().)
+    Report the residual L2 norm ($||r||_2=||Ax-b||_2$) for both linear systems when $N = 8$ and $N = 16$.\par
+    I choose to use the function linalg.lu with parament permute\_l = False,which will calculate the matrices: P,L,U(P refers to permutation). With matrix P, the calculation would avoid deviding zero or a very tiny number.\par
+    This function will factorize the vandermonde matrix V into P, L and U, namely $N=PLU$\par
+    Thus the linear function $Vc=f$ would become $PLUc=f$ ,namely $LUc=P^{-1}f$\par
+    Then one function has been split into two:$Ly=M(let\ M = P^{-1}f)$ and $Uc=y$. Solving out these two function, then we will get the coeffecient matrix $c$\par
+    By doing so, the original $O(n^3)$ gaussian elimination algorithm has become $O(n^2)$, which is much more efficient.The residual L2 norm is shown as follows, the algorithm's performance is pretty good.\par 
+    \begin{figure}[H]
+    	\centering
+    	\includegraphics[width=1\textwidth]{./linear algebra/result_1.png}
+    	\caption{Running result of the programme}
+    \end{figure}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\textwidth]{./linear algebra/result_2.png}
+		\caption{Running result of the programme}
+	\end{figure}
+    \item (10 points)
+    Using the \textit{numpy.linalg.cond} function in NumPy, plot $N$ vs. $cond(V)$ and $N$ vs. $cond(F)$ for $N = 4, 6, 8, ...32$. 
+    Write a couple of sentences explaining the reasons for the trends in these two plots. Hints: Use a logarithmic scale in y axis for better clarity. Also, try wrapping the creation of $V$ and $F$ into functions that you can call repeatedly to generate the required output data. These functions will be helpful for the next part.\par
+    The graph of cond(V) and cond(F) is shown as follows:\par
+    For linear function $Ax = b$, $cond(A)$ can determine how sensitive the function is. A very big condition number means that very tiny changes of b would lead to greate change of x\par 
+    Both $cond(V)$ and $cond(F)$ explodes with N increasing, that's because when N become too big, overfitting would usually occur. When overfitting, a tiny change will make big differences, the system is rather sensitive, thus possessing high condition number.\par
+    In addition, fourier series fit the function $f(x)=\frac{1}{1+x^2}$ better than polynomial. Thus, facing tiny changes, it's system is less sensitive, which means lower condition number. That explains why $cond(F)$ is always lower than $cond(V)$
+   	\begin{figure}[H]
+   	\centering
+   	\includegraphics[width=1\textwidth]{./linear algebra/cond.png}
+   	\caption{$cond(V)\ and\ cond(F)$}
+    \end{figure}
+    \item (15 points) \label{q:3.3}
+    A necessary condition for being able to use Cholesky factorization is that the matrix must be positive definite. 
+    Construct $A_V = V^TV$ and $A_F = F^TF$ for $N = 4, 6, \dots32$ (a total of 30 matrices). 
+    Mathematically, when would these matrices be positive definite? Explain.
+    Using the \textit{isposdef}() function introduced in Appendix \ref{app:posdef}, check to which matrices NumPy reports as positive definite. Create a table of values that includes the following columns: $N$, \textit{isposdef}($A_V$), \textit{isposdef}($A_F$), cond($V$), cond($F$).
+    What is the largest value of $N$ where $A_V$ is positive definite, and what is the condition number of that $V$? 
+    What is the largest value of $N$ where $A_F$ is positive definite, and what is the condition number of that $F$? 
+    Are these condition numbers connected in some way? If so, how?
+    
+    \item (10 points)
+    For $N = 8$, transform the linear systems above into positive definite systems according to Question \ref{q:3.3}, and use Cholesky factorization (\textit{numpy.linalg.cholesky}()) to solve them. Report the residual L2 norm for each solution. Compare the residuals to Question \ref{q:3.1}: how does Cholesky compare to LU?
+
+
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%
+\section{Least Squares Problems and QR (25 points)}\label{sec:lin_lsp}
+
+In the question above, a $M\times M$ square linear system is solved for the interpolation coeffcients.
+The resulting interpolation function can provide a solution that pass through all the sample points.
+However, in some applications, finding such a solution could be too time-consuming and unnecessary, or even impossible (Consider two sample with the same $x$ value and different $y$ values).
+In such cases, we usually reduce the number of the interpolants (let $M>N$), and solve the resulting over-determined linear system using least square method.
+Instead of looking for the exact solution to an over-determined system, we look for the solution with the smallest error vector $V\vec{c}-\vec{f}$ (or $F\vec{c}-\vec{f}$) by minimizing the overall backward error:
+
+\begin{center}
+minimize $\|V \vec{c}-\vec{f}\|_{2}^{2}$
+\end{center}
+
+\begin{enumerate}[label=4.\arabic*]
+    \item (15 points)
+    Solve the least square system with QR decomposition(\textit{numpy.linalg.qr}()) when $M=16$, $N=4,8$.
+    \item (10 points)
+    Plot the $g_V$, $g_F$ when $M=16$, $N=4,8$, compare them with the analytical function $f(x)$ and the interpolation function obtained in Question \ref{q:3.1}.
+\end{enumerate}
+
+
+\end{document}
