@@ -2,6 +2,7 @@
 
 \documentclass[10pt]{article}
 
+\usepackage[latin1]{inputenc}
 \usepackage{amsmath, amssymb, amsfonts, amsthm} 
 \usepackage{upgreek} 
 \usepackage{amsthm} 
@@ -84,56 +85,9 @@ $\int_{\mathbb{R}} G(x) d x=1$
 
 \begin{enumerate}[label=2.\arabic*]
     \item (10 points)
-    Choose a few different one-dimensional Gaussian functions (by choosing different mean and variance values), plot them.\par
-    Draw four gaussian distribution graph based on 3$\sigma$-rule, the four graphs are shown as follows:\par
-    \begin{figure}[htbp]
-    	\centering
-    	\begin{minipage}[c]{0.5\textwidth} %minipage????????0.2????0.2
-    		\centering
-    		\includegraphics[width=1\linewidth]{./gaussian/0.png}
-    		\caption{Gaussian Distribution($\mu=0\ and\ \sigma=1$)}
-    	\end{minipage}%
-    	\begin{minipage}[c]{0.5\textwidth}
-    		\centering
-    		\includegraphics[width=1\textwidth]{./gaussian/1.png}
-    		\caption{Gaussian Distribution($\mu=1\ and\ \sigma=2$)}
-    	\end{minipage}
-    \end{figure}
-	\begin{figure}[htbp]
- 	\centering
- 	\begin{minipage}[c]{0.5\textwidth} %minipage????????0.2????0.2
- 		\centering
- 		\includegraphics[width=1\linewidth]{./gaussian/0.png}
- 		\caption{Gaussian Distribution($\mu=5\ and\ \sigma=0.5$)}
- 	\end{minipage}%
- 	\begin{minipage}[c]{0.5\textwidth}
- 		\centering
- 		\includegraphics[width=1\textwidth]{./gaussian/1.png}
- 		\caption{Gaussian Distribution($\mu=10\ and\ \sigma=4$)}
- 	\end{minipage}
- 	\end{figure}
- 	Put them together:\par
-	\begin{figure}[H]
- 		\centering
- 		\includegraphics[width=1\textwidth]{./gaussian/together.png}
- 		\caption{Gaussian Distribution($\mu=10\ and\ \sigma=4$)}
- 	\end{figure}
+    Choose a few different one-dimensional Gaussian functions (by choosing different mean and variance values), plot them.
     \item (10 points)
-    Verify the above identity for each Gaussian function.\par 
-    Using knowledge of calculus,I write a programme to verify the above identity for the four function mentioned above.The running result of the programme are as follows:\par
-   	\begin{figure}[H]
-    	\centering
-    	\includegraphics[width=1\textwidth]{./gaussian/result_1.png}
-    	\caption{Running result of the programme}
-    \end{figure}
-	The integral region is $[\mu - 4\sigma,\mu + 4\sigma]$,according to the attributions of gaussian function,the result would be extremely close to 1.Apparently,with the region strenching,the result would infinitely approach to 1,which numerically verify the above identity.\par
-	Then I try to use Kahan Algorithm to reduce error,the running results are as follows:\par
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=1\textwidth]{./gaussian/result_2.png}
-		\caption{Running result of the programme}
-	\end{figure}
-	The result would be much more precise with the help of kahan algorithm.
+    Verify the above identity for each Gaussian function. 
 \end{enumerate}
 
 
@@ -152,7 +106,7 @@ $f(x)=\frac{1}{1+x^2}$
 for $x\in[0,1]$. Your monomial interpolants (with $N=n+1$ terms) are given by
 
 \begin{center}
-$g_V(x)=\sum_{j=0}^{N} c_j x^j$
+$g_V(x)=\sum_{j=0}^{n} c_j x^j$
 \end{center}
 
 and
@@ -206,36 +160,19 @@ For simplicity, assume $M=N$ for the entire problem.
 
 \begin{enumerate}[label=3.\arabic*]
     \item (25 points) \label{q:3.1}
-    Use an LU solve (\textit{scipy.linalg.lu} from SciPy package) to estimate the monomial coefficients $\vec{c}$. (You can solve a linear system $A
-    \vec{x}=\vec{b}$ using NumPy API \textit{numpy.linalg.solve}().)
-    Report the residual L2 norm ($||r||_2=||Ax-b||_2$) for both linear systems when $N = 8$ and $N = 16$.\par
-    I choose to use the function linalg.lu with parament permute\_l = False,which will calculate the matrices: P,L,U(P refers to permutation). With matrix P, the calculation would avoid deviding zero or a very tiny number.\par
-    This function will factorize the vandermonde matrix V into P, L and U, namely $N=PLU$\par
-    Thus the linear function $Vc=f$ would become $PLUc=f$ ,namely $LUc=P^{-1}f$\par
-    Then one function has been split into two:$Ly=M(let\ M = P^{-1}f)$ and $Uc=y$. Solving out these two function, then we will get the coeffecient matrix $c$\par
-    By doing so, the original $O(n^3)$ gaussian elimination algorithm has become $O(n^2)$, which is much more efficient.The residual L2 norm is shown as follows, the algorithm's performance is pretty good.\par 
-    \begin{figure}[H]
-    	\centering
-    	\includegraphics[width=1\textwidth]{./linear algebra/result_1.png}
-    	\caption{Running result of the programme}
-    \end{figure}
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=1\textwidth]{./linear algebra/result_2.png}
-		\caption{Running result of the programme}
-	\end{figure}
+    Use an LU solve (\textit{scipy.linalg.lu} from SciPy package) to estimate the monomial coefficients $\vec{c}$. 
+    Report the residual L2 norm for both linear systems when $N = 8$ and $N = 16$. 
+    
+    Hint: After LU decomposition, you can solve the resulting linear systems step by step using the NumPy API \textit{numpy.linalg.solve}().
+    
+    Hint: Given a problem $A\vec{x}=\vec{b}$, the residual L2 norm is $||r||_2=||A\vec{x}-\vec{b}||_2$.
+    
     \item (10 points)
     Using the \textit{numpy.linalg.cond} function in NumPy, plot $N$ vs. $cond(V)$ and $N$ vs. $cond(F)$ for $N = 4, 6, 8, ...32$. 
-    Write a couple of sentences explaining the reasons for the trends in these two plots. Hints: Use a logarithmic scale in y axis for better clarity. Also, try wrapping the creation of $V$ and $F$ into functions that you can call repeatedly to generate the required output data. These functions will be helpful for the next part.\par
-    The graph of cond(V) and cond(F) is shown as follows:\par
-    For linear function $Ax = b$, $cond(A)$ can determine how sensitive the function is. A very big condition number means that very tiny changes of b would lead to greate change of x\par 
-    Both $cond(V)$ and $cond(F)$ explodes with N increasing, that's because when N become too big, overfitting would usually occur. When overfitting, a tiny change will make big differences, the system is rather sensitive, thus possessing high condition number.\par
-    In addition, fourier series fit the function $f(x)=\frac{1}{1+x^2}$ better than polynomial. Thus, facing tiny changes, it's system is less sensitive, which means lower condition number. That explains why $cond(F)$ is always lower than $cond(V)$
-   	\begin{figure}[H]
-   	\centering
-   	\includegraphics[width=1\textwidth]{./linear algebra/cond.png}
-   	\caption{$cond(V)\ and\ cond(F)$}
-    \end{figure}
+    Write a couple of sentences explaining the reasons for the trends in these two plots. 
+    
+    Hints: Use a logarithmic scale in y axis for better clarity. Also, try wrapping the creation of $V$ and $F$ into functions that you can call repeatedly to generate the required output data. These functions will be helpful for the next part.
+    
     \item (15 points) \label{q:3.3}
     A necessary condition for being able to use Cholesky factorization is that the matrix must be positive definite. 
     Construct $A_V = V^TV$ and $A_F = F^TF$ for $N = 4, 6, \dots32$ (a total of 30 matrices). 
@@ -246,7 +183,7 @@ For simplicity, assume $M=N$ for the entire problem.
     Are these condition numbers connected in some way? If so, how?
     
     \item (10 points)
-    For $N = 8$, transform the linear systems above into positive definite systems according to Question \ref{q:3.3}, and use Cholesky factorization (\textit{numpy.linalg.cholesky}()) to solve them. Report the residual L2 norm for each solution. Compare the residuals to Question \ref{q:3.1}: how does Cholesky compare to LU?
+    For $N = 8$, transform the linear systems above into symmetric positive definite systems according to Question \ref{q:3.3}, and use Cholesky factorization (\textit{numpy.linalg.cholesky}()) to solve them. Report the residual L2 norm for each solution. Compare the residuals to Question \ref{q:3.1}: how does Cholesky compare to LU?
 
 
 \end{enumerate}
