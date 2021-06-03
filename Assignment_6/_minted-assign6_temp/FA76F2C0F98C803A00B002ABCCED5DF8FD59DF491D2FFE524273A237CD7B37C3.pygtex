@@ -1,0 +1,19 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} import}
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+\PYG{k+kn}{import} \PYG{n+nn}{PIL}
+\PYG{k+kn}{import} \PYG{n+nn}{PIL.Image}
+
+\PYG{c+c1}{\PYGZsh{} open image in grey\PYGZhy{}scale}
+\PYG{n}{img} \PYG{o}{=} \PYG{n}{PIL}\PYG{o}{.}\PYG{n}{Image}\PYG{o}{.}\PYG{n}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}lena.jpg\PYGZdq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{convert}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}L\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{img\PYGZus{}seq} \PYG{o}{=} \PYG{n}{img}\PYG{o}{.}\PYG{n}{getdata}\PYG{p}{()}
+\PYG{c+c1}{\PYGZsh{} reshape and normalize to [0,1]}
+\PYG{n}{img\PYGZus{}arr} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{img\PYGZus{}seq}\PYG{p}{)}\PYG{o}{.}\PYG{n}{reshape}\PYG{p}{(}\PYG{l+m+mi}{256}\PYG{p}{,}\PYG{l+m+mi}{256}\PYG{p}{)}\PYG{o}{*}\PYG{p}{(}\PYG{l+m+mf}{1.0}\PYG{o}{/}\PYG{l+m+mi}{255}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} do sth...}
+
+\PYG{c+c1}{\PYGZsh{} new\PYGZus{}arr is a 256x256 matrix with the values in [0,1]}
+\PYG{n}{y}\PYG{o}{=}\PYG{n}{np}\PYG{o}{.}\PYG{n}{asarray}\PYG{p}{(}\PYG{n}{new\PYGZus{}arr}\PYG{o}{*}\PYG{l+m+mi}{255}\PYG{p}{,}\PYG{n}{dtype}\PYG{o}{=}\PYG{n}{np}\PYG{o}{.}\PYG{n}{uint8}\PYG{p}{)}
+\PYG{n}{w}\PYG{o}{=}\PYG{n}{PIL}\PYG{o}{.}\PYG{n}{Image}\PYG{o}{.}\PYG{n}{fromarray}\PYG{p}{(}\PYG{n}{y}\PYG{p}{,}\PYG{n}{mode}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}L\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{w}\PYG{o}{.}\PYG{n}{save}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}out.png\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}

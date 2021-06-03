@@ -128,17 +128,17 @@ Solving each of them will cost **O(N^2)** time.
 
 Sometimes when we transform the matrix A, dividing zeros or a very tiny number will occur, which will cause bad effects. We can solve this problem by pivoting, namely exchange two rows or two cols. In the view of matrix, namely multiply a matrix P (referring to permutation) on the left, or on the right. (PA or AP).
 
-![LU_01](C:\Users\92304\PycharmProjects\mfcs_assignment\note images\LU_01.png)
+![LU_01](.\note images\LU_01.png)
 
 In this way, the A will become: A = LUP (A = PLU is also feasible).  
 
-![LU_02](C:\Users\92304\PycharmProjects\mfcs_assignment\note images\LU_02.png)
+![LU_02](.\note images\LU_02.png)
 
 Hints: we can store matrix L and U into a singleton matrix. **Don't forget to parse it into two matrices!**
 
 LU Factorization: 
 
-![LU_03](C:\Users\92304\PycharmProjects\mfcs_assignment\note images\LU_03.png)
+![LU_03](.\note images\LU_03.png)
 
 #### lecture 3
 
@@ -164,7 +164,7 @@ A^TA\ is\ always\ symmtrical\ and\ semi-definite.
 $$
 **Tikhonov Regularization**
 
-![regression_01](C:\Users\92304\PycharmProjects\mfcs_assignment\note images\regression_01.png)
+<img src=".\note images\regression_01.png" alt="regression_01" style="zoom:50%;" />
 
 **Semi-Definite Matrix**
 $$
@@ -209,9 +209,9 @@ So we got **Cholesky Factorization**
 $$
 C=LL^T
 $$
-![cholesky_01](C:\Users\92304\PycharmProjects\mfcs_assignment\note images\cholesky_01.png)
+<img src=".\note images\cholesky_01.png" alt="cholesky_01" style="zoom:50%;" />
 
-![cholesky_02](C:\Users\92304\PycharmProjects\mfcs_assignment\note images\cholesky_02.png)
+<img src=".\note images\cholesky_02.png" alt="cholesky_02" style="zoom:50%;" />
 
 In contrast with **LU Factorization**:
 
@@ -225,9 +225,9 @@ Some system may use sparse matrix(exists a lot of zeros) to store information, t
 
 Special matrix may performance better in calculation.(There exists special tricks for them.)
 
-![banded](C:\Users\92304\PycharmProjects\mfcs_assignment\note images\cyclic.png)
+<img src=".\note images\cyclic.png" alt="banded" style="zoom:50%;" />
 
-![banded](C:\Users\92304\PycharmProjects\mfcs_assignment\note images\banded.png)
+<img src=".\note images\banded.png" alt="banded" style="zoom:33%;" />
 
 #### lecture 5
 
@@ -257,7 +257,7 @@ By using QR Factorization,
 $$
 R^TQ^TQRx=R^TQ^Tb\rightarrow x=R^{-1}Q^Tb
 $$
- 
+
 $$
 Avoid\ calculating\ A^TA\ or\ (A^TA)^{-1}
 $$
