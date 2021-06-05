@@ -190,7 +190,24 @@ We will now use $M$ to denote $h^{-2} A$.
     print the 3 eigenvalues with the smallest magnitude, 
     and plot the eigenvectors corresponding to them.
     The eigenvalues should be close to $-\pi^{2},-4 \pi^{2}$, and $-9 \pi^{2}$, 
-    and the eigenvectors should look like $\psi_{1}, \psi_{2}$, and $\psi_{3}$, as you've shown in Question \ref{q:eigenvector}.
+    and the eigenvectors should look like $\psi_{1}, \psi_{2}$, and $\psi_{3}$, as you've shown in Question \ref{q:eigenvector}.\par
+	The eigenvalues are -9.86, -39.47 and -88.76, which are correspondingly equal to  $-\pi^{2},-4 \pi^{2}$, and $-9 \pi^{2}$.\par
+	The eigenvectors are correspondingly equal to $k\psi_{1}$, $k\psi_{2}$ and $k\psi_{3}$. 
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{Eigenvectors/eigen_vector1.png}
+		\caption{Eigenvalue = $-\pi^{2}$}
+	\end{figure}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{Eigenvectors/eigen_vector2.png}
+		\caption{Eigenvalue = $-4\pi^{2}$}
+	\end{figure}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{Eigenvectors/eigen_vector3.png}
+		\caption{Eigenvalue = $-9\pi^{2}$}
+	\end{figure}
 \end{enumerate}
 
 \section{SVD Decomposition (30 points)}
@@ -237,11 +254,71 @@ Note that when $\sigma_{i}$ is very small, the term $\sigma_{i} \mathbf{u}_{i} \
 \begin{enumerate}[label=3.\arabic*]
 % \setcounter{enumi}{2}
     \item (10 points) 
-    Load the sample image in Appendix \ref{app:sample_img} using Python Imaging Library (See details in Appendix \ref{app:pil}). Compute the singular value decomposition of $A$ using NumPy API \textit{linalg.svd}().
+    Load the sample image in Appendix \ref{app:sample_img} using Python Imaging Library (See details in Appendix \ref{app:pil}). Compute the singular value decomposition of $A$ using NumPy API \textit{linalg.svd}().\par
+    I will use package cv2 to solve this problem.\par
+    The singular values are $(6.47\times 10^4, 1.06\times 10^4,8.18\times 10^3,6.48\times 10^3,5.88\times 10^3...)$.
     \item (10 points)
     For $k=2,4,8,16,32,64,128,p$, construct $A_k$ and display the corresponding (approximate) image; you will need to report the rank $k$ in the title of the corresponding figure. Organize your images in a $4\times2$ grid in document.
+ 	\begin{figure}[H]
+    	\centering
+    	\begin{minipage}[c]{0.45\textwidth} 
+    		\centering
+    		\includegraphics[width=1\textwidth]{SVD/k = 2.png}
+    		\caption{$k=2$}
+    	\end{minipage}%
+    	\begin{minipage}[c]{0.45\textwidth}
+    		\centering
+    		\includegraphics[width=1\textwidth]{SVD/k = 4.png}
+    		\caption{$k=4$}
+    	\end{minipage}
+    \end{figure}
+ 	\begin{figure}[H]
+		\centering
+		\begin{minipage}[c]{0.45\textwidth} 
+			\centering
+			\includegraphics[width=1\textwidth]{SVD/k = 8.png}
+			\caption{$k=8$}
+		\end{minipage}%
+		\begin{minipage}[c]{0.45\textwidth}
+			\centering
+			\includegraphics[width=1\textwidth]{SVD/k = 16.png}
+			\caption{$k=16$}
+		\end{minipage}
+	\end{figure}
+ 	\begin{figure}[H]
+		\centering
+		\begin{minipage}[c]{0.45\textwidth} 
+			\centering
+			\includegraphics[width=1\textwidth]{./SVD/k = 32.png}
+			\caption{$k=32$}
+		\end{minipage}%
+		\begin{minipage}[c]{0.45\textwidth}
+			\centering
+			\includegraphics[width=1\textwidth]{./SVD/k = 64.png}
+			\caption{$k=64$}
+		\end{minipage}
+	\end{figure}
+ 	\begin{figure}[H]
+		\centering
+		\begin{minipage}[c]{0.45\textwidth} 
+			\centering
+			\includegraphics[width=1\textwidth]{./SVD/k = 128.png}
+			\caption{$k=128$}
+		\end{minipage}%
+		\begin{minipage}[c]{0.45\textwidth}
+			\centering
+			\includegraphics[width=1\textwidth]{./SVD/k = 512.png}
+			\caption{$k=p=512$}
+		\end{minipage}
+	\end{figure}
     \item (10 points)
-    Make a plot of singular values of $A$ to see how the size of singular values drop at those point (this gives you an idea of for what $k$, $A_k$ is a reasonably close approximation to $A$).
+    Make a plot of singular values of $A$ to see how the size of singular values drop at those point (this gives you an idea of for what $k$, $A_k$ is a reasonably close approximation to $A$).\par
+	The graph of singular values is shown as follow. k = 64 would be a good choice.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.7]{./SVD/singular.png}
+		\caption{singular values}
+	\end{figure}
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -258,11 +335,19 @@ You must implement Newton's method and Secant method in Python by yourself.
 
 \begin{enumerate}[label=4.\arabic*]
     \item (10 points)
-    Make a plot of the polynomial on the interval $[0,1]$. How many unique roots are there? 
+    Make a plot of the polynomial on the interval $[0,1]$. How many unique roots are there? \par
+   	\begin{figure}[H]
+    	\centering
+    	\includegraphics[scale=0.7]{./Nonlinear/p(x).png}
+    	\caption{$p(x)$}
+    \end{figure}
+	There are 5 roots.
     \item (10 points)
-    Search the root using Newton's method with the initial guess $x_0=0.45$. What is the root of the polynomial at least 10 digits of accuracy?
+    Search the root using Newton's method with the initial guess $x_0=0.45$. What is the root of the polynomial at least 10 digits of accuracy?\par
+    The root for the initial guess is 0.1666666667, and the other four roots are 0.2000000000, 0.3333333333, 0.2500000000 and 0.5000000000.
     \item (10 points)
-    Search the root using Secant method with the initial guess $x_0=0.45$ and $x_{-1}=0$. What is the root at least 10 digits of accuracy? Is it same with the Newton's method?
+    Search the root using Secant method with the initial guess $x_0=0.45$ and $x_{-1}=0$. What is the root at least 10 digits of accuracy? Is it same with the Newton's method?\par
+    The root found by Secant method is 0.4999999999, which is different from the root found by Newton's method. 
 \end{enumerate}
 
 % \bibliographystyle{plain}

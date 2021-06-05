@@ -251,7 +251,7 @@ minimize\ ||Ax-b||_2^2
 $$
 is **equivalent to**:
 $$
-solve\ A^TA=A^Tb
+solve\ A^TAx=A^Tb
 $$
 By using QR Factorization,
 $$
